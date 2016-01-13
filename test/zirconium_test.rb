@@ -14,11 +14,9 @@ class ZirconiumTest < ZirconiumTestCase
   end
 
   def test_create_mock
-
     mock = create_mock
 
-    assert_empty mock.called_methods
-    assert mock.nothing_was_called?
-
+    assert_empty mock.methods_called
+    refute mock.methods_were_called?
   end
 end

@@ -16,7 +16,7 @@ module Zirconium
       assert_empty mock.expectations
       assert_nil mock.class_being_mocked
       assert_empty mock.methods_called
-      assert mock.nothing_was_called?
+      refute mock.methods_were_called?
     end
 
     def test_expect
@@ -35,7 +35,8 @@ module Zirconium
       mock.production_called_a_method
 
       assert_equal 1, mock.methods_called.length
-      assert_equal :production_called_a_method, mock.methods_called[0]
+      expected_expectation = Expectation.new(:production_called_a_method)
+      assert_equal expected_expectation, mock.methods_called[0]
       refute mock.respond_to? :production_called_a_method
     end
 
@@ -78,7 +79,25 @@ module Zirconium
       assert_empty mock.methods_called
       assert_equal returned_value, mock.method_to_mock_out
       assert_equal 1, mock.methods_called.length
-      assert_equal :method_to_mock_out, mock.methods_called[0]
+      expected_expectation = Expectation.new(:method_to_mock_out)
+      assert_equal expected_expectation, mock.methods_called[0]
+    end
+
+    def test_calling_unimplemented_method_throws_error
+      mock = MockObject.new ClassToMockOut
+
+      assert_raises NoMethodError do
+        mock.some_method_that_hasnt_been_implemented
+      end
+    end
+
+    def test_mock_object_to_s_includes_mocked_class_name
+      mock1 = MockObject.new
+
+      refute mock1.to_s.include?('ClassToMockOut')
+
+      mock2 = MockObject.new ClassToMockOut
+      assert mock2.to_s.include?('ClassToMockOut')
     end
   end
 

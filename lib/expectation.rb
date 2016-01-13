@@ -25,6 +25,18 @@ module Zirconium
       @return_value
     end
 
+    def == other_expectation
+      @method_symbol == other_expectation.method_symbol
+    end
+
+    def eql? other_expectation
+      self == other_expectation
+    end
+
+    def hash
+      @method_symbol.hash
+    end
+
   end
 
 end

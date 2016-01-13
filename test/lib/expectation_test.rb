@@ -11,6 +11,14 @@ module Zirconium
       assert_equal :method_to_expect, expected.method_symbol
       refute expected.called?
       assert_empty expected.arguments_passed_in
+
+      # I dont know if I want this to throw an exception when the user calls the method with incorrect arguments
+      # that would propably require a verify system. similar to C#'s MOQ library'
+
+      # expected_args = ['arg1', 'arg2']
+      # object2 = Expectation.new(:other_expectation, expected_args)
+      #
+      # assert_equal expected_args, object2.expected_arguments
     end
 
     def test_to_return
@@ -53,6 +61,13 @@ module Zirconium
 
       assert expected.called?
       assert_equal [arg_1, arg_2, arg_3], expected.arguments_passed_in
+    end
+
+    def test_expectations_are_equal
+      assert_overode_equals Expectation.new(nil), Expectation.new(nil)
+      assert_overode_equals Expectation.new(:some_method), Expectation.new(:some_method)
+
+      refute_overrode_equals Expectation.new(:some_method), Expectation.new(:some_other_method)
     end
   end
 
