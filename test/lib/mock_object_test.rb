@@ -99,6 +99,22 @@ module Zirconium
       mock2 = MockObject.new ClassToMockOut
       assert mock2.to_s.include?('ClassToMockOut')
     end
+
+    def test_method_named
+      mock = MockObject.new
+      empty_expectation = mock.method_named(:method_that_wasnt_called)
+
+      assert_nil empty_expectation.method_symbol
+      refute empty_expectation.called?
+
+      mock.called_a_method
+
+      assert_equal 1, mock.methods_called.length
+      called_expectation = mock.method_named :called_a_method
+
+      assert_equal :called_a_method, called_expectation.method_symbol
+      assert called_expectation.called?
+    end
   end
 
 end

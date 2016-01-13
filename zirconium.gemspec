@@ -6,6 +6,7 @@ require 'zirconium/version'
 Gem::Specification.new do |spec|
   spec.name          = "zirconium"
   spec.version       = Zirconium::VERSION
+  spec.description   = "A simple library for creating mocks."
   spec.authors       = ["JArthurJohnston"]
   spec.email         = ["joe.a.johnston@gmail.com"]
 
@@ -27,5 +28,4 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest"
 end

@@ -21,6 +21,16 @@ module Zirconium
       new_expectation
     end
 
+    def method_named symbol
+      @methods_called.each do
+        |each_expectation|
+        if each_expectation.method_symbol == symbol
+          return each_expectation
+        end
+      end
+      return Expectation.new(nil)
+    end
+
     def method_valid? symbol
       unless @class_being_mocked.nil?
         unless @class_being_mocked.method_defined? symbol
