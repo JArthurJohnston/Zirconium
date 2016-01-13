@@ -5,7 +5,7 @@ A simple framework for creating lightweight mock objects.
 ## Installation
 
 NOTE: zirconium is still very much in development. As such it has not yet been pushed to rubygems.org. And the following instructions will not work.
-If you would like to test zirconium on your own, please fork and copy this repo and build it on your machine.
+If you would like to test zirconium on your own, please follow the instructions in the Manual Installation section.
 
 Add this line to your application's Gemfile:
 
@@ -21,9 +21,23 @@ Or install it yourself as:
 
     $ gem install zirconium
 
+## Manual Installation
+
+Download the 'zirconium-<version number>.gem' file located in this repo.
+Install it on your machine using:
+
+    $ gem install <path to zirconium.gem>
+
+
 ## Usage
 
-include the Zirconium module in your test class. then youll be able to create mock objects using the :create_mock method.
+Require zicronium in you test class or test helper file.
+
+```ruby
+require 'zirconium'
+```
+
+Include the Zirconium module in your test class. then youll be able to create mock objects using the :create_mock method.
 
 ```ruby
 mock_object = create_mock
