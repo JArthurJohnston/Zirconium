@@ -4,6 +4,9 @@ A simple framework for creating lightweight mock objects.
 
 ## Installation
 
+NOTE: zirconium is still very much in development. As such it has not yet been pushed to rubygems.org. And the following instructions will not work.
+If you would like to test zirconium on your own, please fork and copy this repo and build it on your machine.
+
 Add this line to your application's Gemfile:
 
 ```ruby
