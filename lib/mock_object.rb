@@ -31,15 +31,6 @@ module Zirconium
       return Expectation.new(nil)
     end
 
-    def method_valid? symbol
-      unless @class_being_mocked.nil?
-        unless @class_being_mocked.method_defined? symbol
-          return false
-        end
-      end
-      return true
-    end
-
     def methods_were_called?
       !@methods_called.empty?
     end
@@ -52,11 +43,11 @@ module Zirconium
         |each_expectation|
         if each_expectation.method_symbol == symbol
           @methods_called.push(each_expectation)
-          return each_expectation.was_called_with(args)
+          return each_expectation.is_being_called_with(args)
         end
       end
       unexpected_method = Expectation.new(symbol)
-      unexpected_method.was_called_with(args)
+      unexpected_method.is_being_called_with(args)
       @methods_called.push(unexpected_method)
     end
 
@@ -73,6 +64,18 @@ module Zirconium
       end
       super
     end
+
+    private
+
+    def method_valid? symbol
+      unless @class_being_mocked.nil?
+        unless @class_being_mocked.method_defined? symbol
+          return false
+        end
+      end
+      return true
+    end
+
 
   end
 

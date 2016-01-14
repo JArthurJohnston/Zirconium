@@ -19,7 +19,11 @@ module Zirconium
       @was_called
     end
 
-    def was_called_with *args
+    def called_with? *args
+      @was_called and @arguments_passed_in.eql?(args)
+    end
+
+    def is_being_called_with *args
       @arguments_passed_in = args
       @was_called = true
       @return_value
