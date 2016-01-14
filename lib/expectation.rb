@@ -23,8 +23,8 @@ module Zirconium
       @was_called and @arguments_passed_in.eql?(args)
     end
 
-    def is_being_called_with *args
-      @arguments_passed_in = args
+    def is_being_called_with list_of_args
+      @arguments_passed_in = list_of_args
       @was_called = true
       @return_value
     end
