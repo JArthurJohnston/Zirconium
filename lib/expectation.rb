@@ -1,14 +1,14 @@
 module Zirconium
 
   class Expectation
-    attr_reader :method_symbol,
+    attr_reader :symbol,
                 :return_value,
-                :arguments_passed_in
+                :arguments
 
-    def initialize expected_method_symbol
-      @method_symbol = expected_method_symbol
+    def initialize expected_method_symbol, arguments = []
+      @symbol = expected_method_symbol
+      @arguments = arguments
       @was_called = false
-      @arguments_passed_in = []
     end
 
     def to_return an_object
@@ -20,17 +20,18 @@ module Zirconium
     end
 
     def called_with? *args
-      @was_called and @arguments_passed_in.eql?(args)
+      @was_called and @arguments.eql?(args)
     end
 
     def is_being_called_with list_of_args
-      @arguments_passed_in = list_of_args
+      @arguments = list_of_args
       @was_called = true
       @return_value
     end
 
     def == other_expectation
-      @method_symbol == other_expectation.method_symbol
+      @symbol == other_expectation.symbol and
+          @arguments == other_expectation.arguments
     end
 
     def eql? other_expectation
@@ -38,7 +39,7 @@ module Zirconium
     end
 
     def hash
-      @method_symbol.hash
+      [@symbol, @arguments].hash
     end
 
   end

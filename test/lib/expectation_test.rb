@@ -8,17 +8,14 @@ module Zirconium
     def test_initialize
       expected = Expectation.new(:method_to_expect)
 
-      assert_equal :method_to_expect, expected.method_symbol
+      assert_equal :method_to_expect, expected.symbol
       refute expected.called?
-      assert_empty expected.arguments_passed_in
+      assert_empty expected.arguments
 
-      # I dont know if I want this to throw an exception when the user calls the method with incorrect arguments
-      # that would propably require a verify system. similar to C#'s MOQ library'
+      expected_args = ['arg1', 'arg2']
+      expected2 = Expectation.new(:other_expectation, expected_args)
 
-      # expected_args = ['arg1', 'arg2']
-      # object2 = Expectation.new(:other_expectation, expected_args)
-      #
-      # assert_equal expected_args, object2.expected_arguments
+      assert_equal expected_args, expected2.arguments
     end
 
     def test_to_return
@@ -49,7 +46,7 @@ module Zirconium
 
       assert expected.called?
       assert_equal expected_value, actual_value
-      assert_equal [], expected.arguments_passed_in
+      assert_equal [], expected.arguments
     end
 
     def test_was_called_with_args
@@ -60,7 +57,7 @@ module Zirconium
       expected.is_being_called_with [arg_1, arg_2, arg_3]
 
       assert expected.called?
-      assert_equal [arg_1, arg_2, arg_3], expected.arguments_passed_in
+      assert_equal [arg_1, arg_2, arg_3], expected.arguments
     end
 
     def test_called_with?
@@ -93,6 +90,12 @@ module Zirconium
       assert_overode_equals Expectation.new(:some_method), Expectation.new(:some_method)
 
       refute_overrode_equals Expectation.new(:some_method), Expectation.new(:some_other_method)
+
+      assert_overode_equals Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, 2])
+      assert_overode_equals Expectation.new(:some_method, [2, 3]), Expectation.new(:some_method, [2, 3])
+
+      refute_overrode_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_other_method, [3, 4])
+      refute_overrode_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_method, [4, 5])
     end
   end
 

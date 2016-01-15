@@ -22,13 +22,12 @@ module Zirconium
     end
 
     def method_named symbol
-      @methods_called.each do
-        |each_expectation|
-        if each_expectation.method_symbol == symbol
-          return each_expectation
-        end
-      end
-      return Expectation.new(nil)
+      return find_expectation_by_symbol symbol
+    end
+
+    def method symbol, *args
+      expectation_to_find = Expectation.new(symbol, args)
+      return find_expectation(expectation_to_find)
     end
 
     def methods_were_called?
@@ -41,7 +40,7 @@ module Zirconium
       end
       @expectations.each do
         |each_expectation|
-        if each_expectation.method_symbol == symbol
+        if each_expectation.symbol == symbol
           @methods_called.push(each_expectation)
           return each_expectation.is_being_called_with(args)
         end
@@ -66,6 +65,26 @@ module Zirconium
     end
 
     private
+
+    def find_expectation(expectation_to_find)
+      @methods_called.each do
+      |each_expectation|
+        if each_expectation == expectation_to_find
+          return each_expectation
+        end
+      end
+      return Expectation.new(nil)
+    end
+
+    def find_expectation_by_symbol symbol
+      @methods_called.each do
+        |each_expectation|
+        if each_expectation.symbol == symbol
+          return each_expectation
+        end
+      end
+      return Expectation.new(nil)
+    end
 
     def method_valid? symbol
       unless @class_being_mocked.nil?

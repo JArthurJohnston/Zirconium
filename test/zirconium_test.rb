@@ -19,4 +19,8 @@ class ZirconiumTest < ZirconiumTestCase
     assert_empty mock.methods_called
     refute mock.methods_were_called?
   end
+
+  def test_stub_class
+
+  end
 end
