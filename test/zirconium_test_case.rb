@@ -14,4 +14,8 @@ class ZirconiumTestCase < Minitest::Test
     refute_equal expected1.hash, expected2.hash
   end
 
+  def assert_type expected_class, actual_instance
+    assert_equal expected_class, actual_instance.class
+  end
+
 end

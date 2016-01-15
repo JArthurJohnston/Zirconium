@@ -95,7 +95,6 @@ module Zirconium
       return true
     end
 
-
   end
 
 end

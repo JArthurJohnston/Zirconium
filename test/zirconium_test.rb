@@ -20,7 +20,18 @@ class ZirconiumTest < ZirconiumTestCase
     refute mock.methods_were_called?
   end
 
-  def test_stub_class
+  def test_stub_method
+    obj_to_stub = ClassBeingMocked.new
+    expected_value = 'sstubbed value'
+    stub = stub_method(:method_being_mocked).to_return(expected_value).on(obj_to_stub)
+
+    stub.replace
+
+    assert_equal expected_value, obj_to_stub.method_being_mocked
+
+    stub.restore
+
+    assert_equal 'totally not a mock', obj_to_stub.method_being_mocked
 
   end
 end
