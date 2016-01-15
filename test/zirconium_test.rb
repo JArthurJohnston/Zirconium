@@ -32,6 +32,5 @@ class ZirconiumTest < ZirconiumTestCase
     stub.restore
 
     assert_equal 'totally not a mock', obj_to_stub.method_being_mocked
-
   end
 end
