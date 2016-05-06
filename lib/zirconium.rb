@@ -10,7 +10,7 @@ module Zirconium
   end
 
   def stub_method symbol
-    stub = MethodStub.new symbol
+    MethodStub.new symbol
   end
 
 end
