@@ -15,6 +15,10 @@ module Zirconium
       @return_value = an_object
     end
 
+    def should_return an_object
+      to_return an_object
+    end
+
     def called?
       @was_called
     end

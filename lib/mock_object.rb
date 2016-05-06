@@ -1,4 +1,6 @@
 require_relative 'expectation'
+require_relative 'should_block_handler'
+require_relative 'did_block_handler'
 
 module Zirconium
   class MockObject
@@ -10,6 +12,21 @@ module Zirconium
       @class_being_mocked = class_being_mocked
       @expectations = []
       @methods_called = []
+    end
+
+    def did &block
+      handler = DidBlockHandler.new(self)
+      block.call(handler)
+      return handler.suprises.empty?
+
+    end
+
+    def should &block
+      block.call(ShouldBlockHandler.new(self))
+    end
+
+    def add_expectation an_expectation
+      @expectations.push an_expectation
     end
 
     def expect a_symbol
@@ -25,7 +42,7 @@ module Zirconium
       return find_expectation_by_symbol symbol
     end
 
-    def method symbol, *args
+    def find_method_with symbol, *args
       expectation_to_find = Expectation.new(symbol, args)
       return find_expectation(expectation_to_find)
     end
@@ -64,8 +81,6 @@ module Zirconium
       super
     end
 
-    private
-
     def find_expectation(expectation_to_find)
       @methods_called.each do
       |each_expectation|
@@ -73,8 +88,10 @@ module Zirconium
           return each_expectation
         end
       end
-      return Expectation.new(nil)
+      return nil
     end
+
+    private
 
     def find_expectation_by_symbol symbol
       @methods_called.each do

@@ -33,4 +33,19 @@ class ZirconiumTest < ZirconiumTestCase
 
     assert_equal 'totally not a mock', obj_to_stub.method_being_mocked
   end
+
+  def test_set_expectations_in_block
+    mock = create_mock
+    mock.should do
+      |mock|
+      mock.some_method
+      mock.some_other_method('with', 'arguments')
+      mock.some_method_that_wont_get_called
+    end
+
+    mock.some_method
+    mock.some_other_method('with', 'arguments')
+
+
+  end
 end

@@ -122,15 +122,11 @@ module Zirconium
 
     def test_method
       mock = MockObject.new
-      empty_expectation = mock.method(:method_that_wasnt_called)
-
-      assert_nil empty_expectation.symbol
-      refute empty_expectation.called?
 
       mock.called_a_method
 
       assert_equal 1, mock.methods_called.length
-      called_expectation = mock.method :called_a_method
+      called_expectation = mock.find_method_with :called_a_method
 
       assert_equal :called_a_method, called_expectation.symbol
       assert called_expectation.called?
@@ -138,16 +134,11 @@ module Zirconium
 
     def test_method_with_args
       mock = MockObject.new
-      empty_expectation = mock.method(:method_that_wasnt_called, 'arg1', 'arg2')
-
-      assert_nil empty_expectation.symbol
-      assert_empty empty_expectation.arguments
-      refute empty_expectation.called?
 
       mock.called_a_method('arg1', 'arg2')
 
       assert_equal 1, mock.methods_called.length
-      called_expectation = mock.method :called_a_method, 'arg1', 'arg2'
+      called_expectation = mock.find_method_with :called_a_method, 'arg1', 'arg2'
 
       assert_equal :called_a_method, called_expectation.symbol
       assert_equal ['arg1', 'arg2'], called_expectation.arguments
@@ -159,11 +150,11 @@ module Zirconium
 
       mock.method_to_call('args', 'to', 'pass')
 
-      assert mock.method(:method_to_call, 'args', 'to', 'pass').called?
+      assert mock.find_method_with(:method_to_call, 'args', 'to', 'pass').called?
 
       mock.another_method_to_call('only 1 arg')
 
-      assert mock.method(:another_method_to_call, 'only 1 arg').called?
+      assert mock.find_method_with(:another_method_to_call, 'only 1 arg').called?
     end
   end
 
