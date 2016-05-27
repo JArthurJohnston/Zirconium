@@ -86,16 +86,25 @@ module Zirconium
     end
 
     def test_expectations_are_equal
-      assert_overode_equals Expectation.new(nil), Expectation.new(nil)
-      assert_overode_equals Expectation.new(:some_method), Expectation.new(:some_method)
+      assert_all_equals Expectation.new(nil), Expectation.new(nil)
+      assert_all_equals Expectation.new(:some_method), Expectation.new(:some_method)
 
-      refute_overrode_equals Expectation.new(:some_method), Expectation.new(:some_other_method)
+      refute_all_equals Expectation.new(:some_method), Expectation.new(:some_other_method)
 
-      assert_overode_equals Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, 2])
-      assert_overode_equals Expectation.new(:some_method, [2, 3]), Expectation.new(:some_method, [2, 3])
+      assert_all_equals Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, 2])
+      assert_all_equals Expectation.new(:some_method, [2, 3]), Expectation.new(:some_method, [2, 3])
 
-      refute_overrode_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_other_method, [3, 4])
-      refute_overrode_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_method, [4, 5])
+      refute_all_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_other_method, [3, 4])
+      refute_all_equals Expectation.new(:some_method, [3, 4]), Expectation.new(:some_method, [4, 5])
+    end
+
+    def test_expectation_with_anything_arg_is_equal_to_others
+      assert_equal Expectation.new(nil, [ANYTHING]), Expectation.new(nil, [nil])
+      assert_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [1, 2])
+      assert_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [Object.new, 2])
+
+      refute_equal Expectation.new(nil, [ANYTHING]), Expectation.new(nil, [])
+      refute_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [2])
     end
   end
 

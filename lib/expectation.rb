@@ -1,3 +1,5 @@
+require_relative 'anything'
+
 module Zirconium
 
   class Expectation
@@ -35,7 +37,24 @@ module Zirconium
 
     def == other_expectation
       @symbol == other_expectation.symbol and
-          @arguments == other_expectation.arguments
+          args_are_equal?(other_expectation.arguments)
+    end
+
+    def args_are_equal?(arguments)
+      if @arguments.size == arguments.size
+        for i in 0..arguments.size
+          current_arg = @arguments[i]
+          if current_arg == ANYTHING
+            return true
+          end
+          if current_arg != arguments[i]
+            return false
+          end
+        end
+      else
+        return false
+      end
+      return true
     end
 
     def eql? other_expectation

@@ -45,7 +45,10 @@ class ZirconiumTest < ZirconiumTestCase
 
     mock.some_method
     mock.some_other_method('with', 'arguments')
+  end
 
-
+  def test_any_object
+    any_obj = any_object
+    assert_same any_object, any_obj
   end
 end

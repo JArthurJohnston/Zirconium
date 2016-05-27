@@ -1,6 +1,7 @@
 require "zirconium/version"
 require_relative 'mock_object'
 require_relative '../lib/method_stub'
+require_relative 'anything'
 
 module Zirconium
   # Your code goes here...

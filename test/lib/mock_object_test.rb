@@ -156,6 +156,29 @@ module Zirconium
 
       assert mock.find_method_with(:another_method_to_call, 'only 1 arg').called?
     end
+
+    def test_mock_methods_can_take_any_argument
+      mock = MockObject.new
+      mock.should do
+        |calling|
+        calling.any_method(ANYTHING)
+      end
+
+      mock.did do
+        |check|
+        assert check.any_method(nil).called?
+      end
+    end
+
+    def test_mock_methods_can_check_any_argument
+      mock = MockObject.new
+      mock.some_random_method(Object.new, 2)
+
+      mock.did do
+        |check|
+        assert check.some_random_method(ANYTHING, 2).called?
+      end
+    end
   end
 
 end
