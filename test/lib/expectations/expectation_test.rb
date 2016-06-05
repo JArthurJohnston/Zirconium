@@ -1,5 +1,5 @@
-require_relative '../../test/zirconium_test_case'
-require_relative '../../lib/expectation'
+require_relative '../../../test/zirconium_test_case'
+require_relative '../../../lib/zirconium/expectations/expectation'
 
 module Zirconium
 
@@ -106,6 +106,29 @@ module Zirconium
       refute_equal Expectation.new(nil, [ANYTHING]), Expectation.new(nil, [])
       refute_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [2])
     end
+
+    def test_expectation_is_equal_to_expectation_with_anything
+      assert_equal Expectation.new(nil, [nil]), Expectation.new(nil, [ANYTHING])
+      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [ANYTHING, 2])
+      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, ANYTHING])
+      assert_equal Expectation.new(nil, [Object.new, 2]), Expectation.new(nil, [ANYTHING, 2])
+
+      refute_equal Expectation.new(nil, []), Expectation.new(nil, [ANYTHING])
+      refute_equal Expectation.new(nil, [2]), Expectation.new(nil, [ANYTHING, 2])
+    end
+
+    def test_to_s
+      exp = Expectation.new(:something, [])
+      assert_equal 'Expected Method something() not called', exp.to_s
+
+      exp = Expectation.new(:something, [1, 2])
+      assert_equal 'Expected Method something(1, 2) not called', exp.to_s
+
+      exp = Expectation.new(:something, [1, 2])
+      exp.was_called = true
+      assert_equal 'Expected Method something(1, 2) was called', exp.to_s
+    end
+
   end
 
 end

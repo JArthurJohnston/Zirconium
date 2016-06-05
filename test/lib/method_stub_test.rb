@@ -1,5 +1,5 @@
 require_relative '../zirconium_test_case'
-require_relative '../../lib/method_stub'
+require_relative '../../lib/zirconium/mocks/method_stub'
 
 module Zirconium
 

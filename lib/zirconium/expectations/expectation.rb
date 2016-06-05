@@ -1,8 +1,11 @@
-require_relative 'anything'
+require_relative '../../../lib/zirconium/mocks/anything'
+require_relative 'expectation_string'
 
 module Zirconium
 
   class Expectation
+    include ExpectationString
+
     attr_reader :symbol,
                 :return_value,
                 :arguments
@@ -25,6 +28,10 @@ module Zirconium
       @was_called
     end
 
+    def was_called= a_boolean
+      @was_called = a_boolean
+    end
+
     def called_with? *args
       @was_called and @arguments.eql?(args)
     end
@@ -44,10 +51,11 @@ module Zirconium
       if @arguments.size == arguments.size
         for i in 0..arguments.size
           current_arg = @arguments[i]
-          if current_arg == ANYTHING
+          other_arg = arguments[i]
+          if current_arg == ANYTHING || other_arg == ANYTHING
             return true
           end
-          if current_arg != arguments[i]
+          if current_arg != other_arg
             return false
           end
         end

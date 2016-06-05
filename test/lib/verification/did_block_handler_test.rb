@@ -1,5 +1,5 @@
-require_relative '../../test/zirconium_test_case'
-require_relative '../../lib/mock_object'
+require_relative '../../../test/zirconium_test_case'
+require_relative '../../../lib/zirconium/mocks/mock_object'
 
 module Zirconium
 

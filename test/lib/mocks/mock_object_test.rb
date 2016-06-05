@@ -1,5 +1,5 @@
-require_relative '../../test/zirconium_test_case'
-require_relative '../../lib/mock_object'
+require_relative '../../../test/zirconium_test_case'
+require_relative '../../../lib/zirconium/mocks/mock_object'
 
 module Zirconium
   class MockObjectTest < ZirconiumTestCase
@@ -164,6 +164,8 @@ module Zirconium
         calling.any_method(ANYTHING)
       end
 
+      mock.any_method("any old thing")
+
       mock.did do
         |check|
         assert check.any_method(nil).called?
@@ -178,6 +180,14 @@ module Zirconium
         |check|
         assert check.some_random_method(ANYTHING, 2).called?
       end
+    end
+
+    def test_to_s
+      mock = MockObject.new
+      assert_equal'Mock<Object>', mock.to_s
+
+      mock = MockObject.new(ClassToMockOut)
+      assert_equal 'Mock<ClassToMockOut>', mock.to_s
     end
   end
 

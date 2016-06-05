@@ -1,9 +1,12 @@
-require_relative 'expectation'
-require_relative 'should_block_handler'
-require_relative 'did_block_handler'
+require_relative '../../../lib/zirconium/expectations/expectation'
+require_relative '../../zirconium/verification/should_block_handler'
+require_relative '../../../lib/zirconium/verification/did_block_handler'
+require_relative 'mock_string'
 
 module Zirconium
   class MockObject
+    include MockString
+
     attr_reader :expectations,
                 :class_being_mocked,
                 :methods_called
@@ -55,9 +58,10 @@ module Zirconium
       unless method_valid? symbol
         super(symbol, args)
       end
+      new_expectation = Expectation.new(symbol, args)
       @expectations.each do
         |each_expectation|
-        if each_expectation.symbol == symbol
+        if each_expectation == new_expectation
           @methods_called.push(each_expectation)
           return each_expectation.is_being_called_with(args)
         end
@@ -72,13 +76,6 @@ module Zirconium
         return @class_being_mocked.method_defined? a_symbol
       end
       super a_symbol
-    end
-
-    def to_s
-      unless @class_being_mocked.nil?
-        return @class_being_mocked.name + '(' + super + ')'
-      end
-      super
     end
 
     def find_expectation(expectation_to_find)

@@ -1,4 +1,4 @@
-require_relative 'expectation'
+require_relative '../../../lib/zirconium/expectations/expectation'
 
 module Zirconium
   class ShouldBlockHandler

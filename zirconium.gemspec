@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["JArthurJohnston"]
   spec.email         = ["joe.a.johnston@gmail.com"]
 
-  spec.summary       = "A library for creating simple, light-weight mock objects in ruby."
+  spec.summary       = "A testing-framework independant library for creating simple, readable mock objects in ruby."
   spec.homepage      = "https://github.com/JArthurJohnston/zirconium"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
