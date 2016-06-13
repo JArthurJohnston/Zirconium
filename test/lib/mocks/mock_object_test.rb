@@ -161,7 +161,7 @@ module Zirconium
       mock = MockObject.new
       mock.should do
         |calling|
-        calling.any_method(ANYTHING)
+        calling.any_method(Anything.new)
       end
 
       mock.any_method("any old thing")
@@ -178,7 +178,7 @@ module Zirconium
 
       mock.did do
         |check|
-        assert check.some_random_method(ANYTHING, 2).called?
+        assert check.some_random_method(Anything.new, 2).called?
       end
     end
 

@@ -99,22 +99,23 @@ module Zirconium
     end
 
     def test_expectation_with_anything_arg_is_equal_to_others
-      assert_equal Expectation.new(nil, [ANYTHING]), Expectation.new(nil, [nil])
-      assert_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [1, 2])
-      assert_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [Object.new, 2])
+      assert_equal Expectation.new(nil, [Anything.new]), Expectation.new(nil, [nil])
+      assert_equal Expectation.new(nil, [Anything.new, 2]), Expectation.new(nil, [1, 2])
+      assert_equal Expectation.new(nil, [Anything.new, 2]), Expectation.new(nil, [Object.new, 2])
+      assert_equal Expectation.new(nil, [Anything.new]), Expectation.new(nil, ["some string"])
 
-      refute_equal Expectation.new(nil, [ANYTHING]), Expectation.new(nil, [])
-      refute_equal Expectation.new(nil, [ANYTHING, 2]), Expectation.new(nil, [2])
+      refute_equal Expectation.new(nil, [Anything.new]), Expectation.new(nil, [])
+      refute_equal Expectation.new(nil, [Anything.new, 2]), Expectation.new(nil, [2])
     end
 
     def test_expectation_is_equal_to_expectation_with_anything
-      assert_equal Expectation.new(nil, [nil]), Expectation.new(nil, [ANYTHING])
-      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [ANYTHING, 2])
-      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, ANYTHING])
-      assert_equal Expectation.new(nil, [Object.new, 2]), Expectation.new(nil, [ANYTHING, 2])
+      assert_equal Expectation.new(nil, [nil]), Expectation.new(nil, [Anything.new])
+      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [Anything.new, 2])
+      assert_equal Expectation.new(nil, [1, 2]), Expectation.new(nil, [1, Anything.new])
+      assert_equal Expectation.new(nil, [Object.new, 2]), Expectation.new(nil, [Anything.new, 2])
 
-      refute_equal Expectation.new(nil, []), Expectation.new(nil, [ANYTHING])
-      refute_equal Expectation.new(nil, [2]), Expectation.new(nil, [ANYTHING, 2])
+      refute_equal Expectation.new(nil, []), Expectation.new(nil, [Anything.new])
+      refute_equal Expectation.new(nil, [2]), Expectation.new(nil, [Anything.new, 2])
     end
 
     def test_to_s

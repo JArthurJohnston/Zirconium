@@ -37,7 +37,8 @@ module Zirconium
     end
 
     def is_being_called_with list_of_args
-      @arguments = list_of_args
+      # @arguments = list_of_args
+      # this is replacing the anything arguments on the original expectation, this is why we fail.
       @was_called = true
       @return_value
     end
@@ -48,21 +49,20 @@ module Zirconium
     end
 
     def args_are_equal?(arguments)
-      if @arguments.size == arguments.size
-        for i in 0..arguments.size
-          current_arg = @arguments[i]
-          other_arg = arguments[i]
-          if current_arg == ANYTHING || other_arg == ANYTHING
-            return true
-          end
-          if current_arg != other_arg
-            return false
-          end
-        end
-      else
+      unless @arguments.size == arguments.size
         return false
       end
-      return true
+      if @arguments.empty?
+        return true
+      end
+      for i in 0..@arguments.size - 1
+        this_arg = @arguments[i]
+        other_arg = arguments[i]
+        if this_arg == other_arg or other_arg == this_arg
+          return true
+        end
+      end
+      return false
     end
 
     def eql? other_expectation

@@ -61,7 +61,7 @@ module Zirconium
       new_expectation = Expectation.new(symbol, args)
       @expectations.each do
         |each_expectation|
-        if each_expectation == new_expectation
+        if each_expectation.eql?(new_expectation)
           @methods_called.push(each_expectation)
           return each_expectation.is_being_called_with(args)
         end
