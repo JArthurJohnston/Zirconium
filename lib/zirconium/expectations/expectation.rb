@@ -28,6 +28,10 @@ module Zirconium
       @was_called
     end
 
+    def was_called?
+      @was_called
+    end
+
     def was_called= a_boolean
       @was_called = a_boolean
     end
@@ -37,8 +41,9 @@ module Zirconium
     end
 
     def is_being_called_with list_of_args
-      # @arguments = list_of_args
-      # this is replacing the anything arguments on the original expectation, this is why we fail.
+      unless args_are_equal?(list_of_args)
+        @arguments = list_of_args
+      end
       @was_called = true
       @return_value
     end
@@ -58,9 +63,20 @@ module Zirconium
       for i in 0..@arguments.size - 1
         this_arg = @arguments[i]
         other_arg = arguments[i]
-        if this_arg == other_arg or other_arg == this_arg
-          return true
+        if is_any_arg(this_arg, other_arg)
+          break
+        elsif this_arg != other_arg
+          return false
         end
+      end
+      return true
+    end
+
+    def is_any_arg(this_arg, that_arg)
+      if this_arg.is_a? Anything
+        return this_arg == that_arg
+      elsif that_arg.is_a? Anything
+        return that_arg == this_arg
       end
       return false
     end

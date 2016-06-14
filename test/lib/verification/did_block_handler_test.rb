@@ -25,10 +25,10 @@ module Zirconium
     def test_fails_when_method_wasnt_called
       mock = MockObject.new
 
-      refute(mock.did do
+      mock.did do
         |check|
-        check.fail_cuz_this_method_wasnt_called
-      end)
+        refute check.fail_cuz_this_method_wasnt_called.was_called?
+      end
 
     end
 

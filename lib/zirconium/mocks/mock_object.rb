@@ -20,8 +20,6 @@ module Zirconium
     def did &block
       handler = DidBlockHandler.new(self)
       block.call(handler)
-      return handler.suprises.empty?
-
     end
 
     def should &block

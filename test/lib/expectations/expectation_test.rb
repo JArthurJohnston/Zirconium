@@ -26,6 +26,15 @@ module Zirconium
       assert_equal expected_return_value, expected.return_value
     end
 
+    def test_is_being_called_with_doesnt_override_expected_args
+      original_args = [Anything.new]
+      exp = Expectation.new(:method_1, original_args)
+      called_args = [nil]
+      exp.is_being_called_with(called_args)
+
+      assert_same(original_args, exp.arguments)
+    end
+
     def test_call_and_return_with_nil_value
       expected = Expectation.new(nil)
       refute expected.called?
@@ -47,42 +56,6 @@ module Zirconium
       assert expected.called?
       assert_equal expected_value, actual_value
       assert_equal [], expected.arguments
-    end
-
-    def test_was_called_with_args
-      expected = Expectation.new(nil)
-      arg_3 = Object.new
-      arg_1 = 'arg1'
-      arg_2 = :arg2
-      expected.is_being_called_with [arg_1, arg_2, arg_3]
-
-      assert expected.called?
-      assert_equal [arg_1, arg_2, arg_3], expected.arguments
-    end
-
-    def test_called_with?
-      expected = Expectation.new(nil)
-      arg_3 = Object.new
-      arg_1 = 'arg1'
-      arg_2 = :arg2
-      expected.is_being_called_with [arg_1, arg_2, arg_3]
-
-      assert expected.called_with? arg_1, arg_2, arg_3
-
-      refute expected.called_with? arg_3, arg_2, arg_1
-      refute expected.called_with? arg_1, arg_2
-      refute expected.called_with? 'some arg', 'some other arg'
-    end
-
-    def test_called_with_one_argument
-      expected = Expectation.new(nil)
-      arg_1 = 'arg1'
-      expected.is_being_called_with [arg_1]
-
-      assert expected.called_with? arg_1
-
-      refute expected.called_with? nil
-      refute expected.called_with? 'some arg'
     end
 
     def test_expectations_are_equal

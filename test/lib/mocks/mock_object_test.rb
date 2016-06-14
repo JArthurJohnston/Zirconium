@@ -145,18 +145,6 @@ module Zirconium
       assert called_expectation.called?
     end
 
-    def test_method_missing_passes_args_to_expectation
-      mock = MockObject.new
-
-      mock.method_to_call('args', 'to', 'pass')
-
-      assert mock.find_method_with(:method_to_call, 'args', 'to', 'pass').called?
-
-      mock.another_method_to_call('only 1 arg')
-
-      assert mock.find_method_with(:another_method_to_call, 'only 1 arg').called?
-    end
-
     def test_mock_methods_can_take_any_argument
       mock = MockObject.new
       mock.should do

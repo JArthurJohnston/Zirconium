@@ -51,4 +51,32 @@ class ZirconiumTest < ZirconiumTestCase
     any_obj = any_object
     assert_same any_object, any_obj
   end
+
+  def test_mock_method_called_with_args
+    mock = create_mock
+
+    arg_3 = Object.new
+    arg_1 = 'arg1'
+    arg_2 = :arg2
+    mock.random_method(arg_1, arg_2, arg_3)
+
+    mock.did do
+      |check|
+      assert check.random_method(arg_1, arg_2, arg_3).was_called?
+    end
+  end
+
+  def test_args_are_checked_in_the_correct_order
+      mock = create_mock
+
+      mock.method_to_call('args', 'to', 'pass')
+      mock.another_method_to_call('only 1 arg')
+
+      mock.did do
+      |check|
+        assert check.method_to_call('args', 'to', 'pass').was_called?
+        refute check.method_to_call('pass', 'to', 'args').was_called?
+        assert check.another_method_to_call('only 1 arg').was_called?
+      end
+  end
 end
