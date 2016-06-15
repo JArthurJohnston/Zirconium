@@ -12,10 +12,12 @@ module Zirconium
     end
     
     def eql? other
-      if other.nil? || @mocked_class.nil?
+      if @mocked_class.nil?
         return true
+      elsif other.kind_of? self.class
+        return self.mocked_class == other.mocked_class
       else
-        return @mocked_class == other.mocked_class
+        return other.kind_of? @mocked_class
       end
     end
 
@@ -28,10 +30,5 @@ module Zirconium
     end
   end
 
-  ANYTHING = :literally_anything
-
-  def any_object
-    return ANYTHING
-  end
 
 end

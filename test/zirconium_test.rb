@@ -48,8 +48,8 @@ class ZirconiumTest < ZirconiumTestCase
   end
 
   def test_any_object
-    any_obj = any_object
-    assert_same any_object, any_obj
+    any_obj = anything
+    assert_same any_obj, any_obj
   end
 
   def test_mock_method_called_with_args
@@ -79,4 +79,77 @@ class ZirconiumTest < ZirconiumTestCase
         assert check.another_method_to_call('only 1 arg').was_called?
       end
   end
+
+  def test_anything
+    any_obj = anything
+    assert_type Anything, any_obj
+    assert_nil any_obj.mocked_class
+  end
+
+  def test_any
+    any_obj = any Object
+    assert_type Anything, any_obj
+    assert_same Object, any_obj.mocked_class
+
+    any_obj = any Array
+    assert_type Anything, any_obj
+    assert_same Array, any_obj.mocked_class
+  end
+
+  def test_mocked_method_with_any_arg
+    mock = create_mock
+
+    mock.some_method(123)
+
+    mock.did do
+      |check|
+      assert check.some_method(anything).was_called?
+    end
+  end
+
+  def test_mock_method_setup_with_anything
+    mock = create_mock
+    mock.should do
+      |should|
+      should.some_method(anything).should_return('hello')
+    end
+
+    ret_value = mock.some_method(123)
+
+    mock.did do
+    |check|
+      assert check.some_method(anything).was_called?
+    end
+
+    assert_equal 'hello', ret_value
+  end
+
+  def test_mocked_method_with_any_class_arg
+    mock = create_mock
+
+    mock.some_method(123)
+
+    mock.did do
+    |check|
+      assert check.some_method(any Fixnum).was_called?
+    end
+  end
+
+  def test_mock_method_setup_with_anything
+    mock = create_mock
+    mock.should do
+    |should|
+      should.some_method(any Fixnum).should_return('hello')
+    end
+
+    ret_value = mock.some_method(123)
+
+    mock.did do
+    |check|
+      assert check.some_method(any Fixnum).was_called?
+    end
+
+    assert_equal 'hello', ret_value
+  end
+
 end

@@ -28,6 +28,14 @@ module Zirconium
       assert_same AnyTestClazz, any2.mocked_class
     end
 
+    def test_any_mocked_object_equals_another_object
+      any_thing = Anything.new Fixnum
+
+      assert_equal any_thing, 123
+      refute_equal any_thing, 'four five six'
+      refute_equal any_thing, nil
+    end
+
     def test_anything_equals_nil
       assert_equal Anything.new, nil
 
